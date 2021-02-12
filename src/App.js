@@ -6,7 +6,7 @@ import FilterMovie from "./Components/FilterMovie";
 import AddMovie from './Components/AddMovie'
 import Description from "./Components/Description";
 import Trailer from "./Components/Trailer";
-
+import "./App.css";
 
 function App () {
   const [ Movies, setMovies ] = useState (
@@ -48,39 +48,55 @@ function App () {
   const [warning,setWarning]=useState(false);
 
   // Function AddMovie
-const addNewMovie=(newMovie)=>{
-  if(newMovie.title !== '' && newMovie.description !== '' && newMovie.posterUrl !== '' && newMovie.rate !== '' ){
-    setMovies([...Movies, newMovie]);
-    setWarning(false);
-  }
-  else{
-    setWarning(true);
-  }
- }
+  const addNewMovie=(newMovie)=>{
+    if(newMovie.title !== '' && newMovie.posterUrl !== '' && newMovie.rate !== '' ){
+      setMovies([...Movies, newMovie]);
+      setWarning(false);
+    }
+    else{
+      setWarning(true);
+    }
+   }
 const warningMsg = warning && <div className='alert alert-danger mt-1' role='alert'>Empty box you have to complete !!!!!!!!!!! 
 </div>
 
 // Search Movies 
-const [ Movies1 , setMovies1 ] = useState([]);
-const [searchShow,setSearchShow]=useState(false);
-  const searchMovie = (title , rate)=>{
-    if(title !== '' || rate !== 0){
-      setMovies1(Movies.filter((movie)=>{ return (movie.title === title || movie.rate === rate) }))
-      setSearchShow(true);
+const [ MoviesSearch , setMoviesSearch ] = useState([]);
+const [searchTitle,setSearchTitle]=useState('');
+
+  const searchMovieTitle = (title)=>{
+    setSearchTitle(title);
+    if(title !==''){
+      setMoviesSearch(Movies.filter((movie)=>{return movie.title.toLowerCase().includes(title.toLowerCase()) }))
     }
+    else{
+      setMoviesSearch(Movies);
+    }
+    
+  }
+  const [rateSearch, setRateSearch] = useState(0);
+
+  const searchMovieRate = (rate)=>{
+    setRateSearch(rate);
+    if(rate !== 0){
+      setMoviesSearch(Movies.filter((movie)=>{return movie.rate === rate }))
+    }
+    else{
+      setMoviesSearch(Movies);
+    }
+    
   }
  
     return (
-      <div >
+      <div className='App'>
         <BrowserRouter>
           <Route exact path="/">
             {warningMsg}
-            <div style={{display:'flex'}}>
-            <FilterMovie searchMovie={searchMovie}/>
-            <button className="btn btn-outline-primary" style={{height:'40px',margin:'5px 430px'}}  onClick={() => setSearchShow(false) }>Home</button>
-            </div>
-            <MovieList Movies={searchShow===false ? Movies : Movies1 }/>
-            <AddMovie addNewMovie={addNewMovie}/>
+            <div style={{display:'flex',flexDirection:'column'}}>
+        <FilterMovie searchMovieTitle={searchMovieTitle} titleInput={searchTitle} searchMovieRate={searchMovieRate} rateInput={rateSearch}/>
+        <MovieList Movies={(searchTitle !=='' || rateSearch !== 0 ) ? MoviesSearch : Movies}/>
+        </div>
+        <AddMovie addNewMovie={addNewMovie}/>
           </Route>
           <Route path="/Description/:MovieId">
             <Description Movies={Movies}/>
