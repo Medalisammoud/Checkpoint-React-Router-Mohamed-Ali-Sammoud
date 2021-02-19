@@ -3,7 +3,7 @@ import {  input } from "react-bootstrap";
 import Rating from "react-rating-stars-component";
 import "./Style.css";
 
-const FilterMovie = ({ searchMovieTitle,titleInput,searchMovieRate,rateInput}) => {
+const FilterMovie = ({ setSearchTitle,titleInput,setRateSearch,rateInput}) => {
   
 
   return (
@@ -16,7 +16,7 @@ const FilterMovie = ({ searchMovieTitle,titleInput,searchMovieRate,rateInput}) =
           aria-label="Search"
           value={titleInput}
           aria-describedby="search-addon"
-          onChange={(e)=>{searchMovieTitle(e.target.value);}}
+          onChange={(e)=>{setSearchTitle(e.target.value);}}
         />
       </div>
       <div className='rating'>
@@ -26,8 +26,8 @@ const FilterMovie = ({ searchMovieTitle,titleInput,searchMovieRate,rateInput}) =
           value={rateInput}
           size={25}
           count={5}
-          onChange={(ev) => {
-            searchMovieRate(ev);
+          onChange={(value) => {
+            setRateSearch(value);
           }}
         />
       </div>

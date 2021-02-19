@@ -11,7 +11,7 @@
 }
 
 /* Image on the left side */
-.thumbnail {
+.thumbnail iframe {
   float: left;
   position: relative;
   left: 30px;

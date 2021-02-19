@@ -1,16 +1,18 @@
 import React,{useState} from 'react'
 import { NavLink } from "react-router-dom";
 import './styleDescMovie.css'
+import {Data} from '../Data'
 
-const Description = ({Movies}) => {
-    const path=window.location.pathname.split('');
-    const id=path[path.length-1];
-    const [ Movie, setMovie ] = useState(Movies.find(movie => {return movie.id===Number(id)}));
+const Movie = ({match}) => {
+    
+
+    const [ Movies, setMovies ] = useState (Data);
+    const [ Movie, setMovie ] = useState(Movies.find(movie => {return movie.id===Number(match.params.id)}));
     return (
         <div>
             <div className="card1">
             
-            <div className="thumbnail"><img className="left" src={Movie.posterUrl} alt={Movie.title}/></div>
+            <div className="thumbnail"><iframe className="embed-responsive-item" title={Movie.title} src={Movie.trailer} ></iframe></div>
             <div className="right">
                 <h1>{Movie.title}</h1>
                 
@@ -24,5 +26,5 @@ const Description = ({Movies}) => {
     )
 }
 
-export default Description
+export default Movie
 
